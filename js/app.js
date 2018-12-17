@@ -3,7 +3,7 @@ let deck = [];
 let shuffledDeck = [];
 let cardUnder;
 let field = [];
-let currentPlayer = 0;
+let currentPlayer = 1;
 
 
 // All Cards
@@ -111,22 +111,41 @@ function setCardUnder() {
     console.log(shuffledDeck);
 }
 
+function nextPlayer(current, max){
+    if( current >= max ){ currentPlayer = max - max; }
+    else { currentPlayer++; }
+    return currentPlayer;
+}
+
+
 setCardUnder();
 
-console.log(player);
+console.log('number of players: ' + player.length);
+
+
+
+console.log(currentPlayer);
+console.log(nextPlayer(currentPlayer, player.length - 1));
+console.log(nextPlayer(currentPlayer, player.length - 1));
+console.log(nextPlayer(currentPlayer, player.length - 1));
+console.log(nextPlayer(currentPlayer, player.length - 1));
+console.log(nextPlayer(currentPlayer, player.length - 1));
+console.log(nextPlayer(currentPlayer, player.length - 1));
 
 function serveCards(deck) {
-    if (player[currentPlayer].length > 0) {
-        console.log('ka jokera :');
-        console.log(player[currentPlayer].length);
-    } else {
-        console.log('nuk ka jokera :');
-        // console.log(player[currentPlayer].length);
-        // const playerOneCards = [deck[0], deck[1], deck[4], deck[6], deck[8], deck[9], deck[12], deck[13], deck[16], deck[17]];
-        // const playerTwoCards = [deck[2], deck[3], deck[5], deck[7], deck[10], deck[11], deck[14], deck[15], deck[18], deck[19]];
-        // player[currentPlayer].push(...playerOneCards);
-        // player[currentPlayer + 1].push(...playerTwoCards);
+
+    let counter = 0;
+
+    for (let i=0; i<10; i++) {
+        if( player[currentPlayer].length - 1 > counter ) continue;
+        // let cards = [shuffledDeck[counter], shuffledDeck[counter + 1]];
+        // player[currentPlayer].push(...cards);
+        player[currentPlayer].push(counter, counter + 1);
+        counter+=2;
+        nextPlayer(currentPlayer, player.length - 1);
     }
 }
 
 serveCards(shuffledDeck);
+
+console.log(player);

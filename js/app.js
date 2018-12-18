@@ -197,10 +197,10 @@ function serveCards(deck) {
 
 serveCards(shuffledDeck);
 
-// Draw Card
-function drawCard() {
-    player[currentPlayer].push(shuffledDeck[0]);
-    shuffledDeck.splice(0, 1);
+// Draw Card from field or deck
+function drawCard(from) {
+    player[currentPlayer].push(from[0]);
+    from.splice(0, 1);
 }
 
 // Throw Card

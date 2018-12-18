@@ -7,42 +7,53 @@ let currentPlayer = 1;
 
 
 // All Cards
-// class Deck {
-//   constructor() {
-//     this.deck = [];
-//     const suits = ['Hearts', 'Spades', 'Clubs', 'Diamonds'];
-//     const values = ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King'];
-//     const colors = ['Red', 'Blue'];
-//     for (let color of colors) {
-//       for (let suit in suits) {
-//         for (let value in values) {
-//           this.deck.push(`${color} ${values[value]} of ${suits[suit]}`);
-//         }
-//       }
-//       this.deck.push(`${color} Color Joker`);
-//     this.deck.push(`${color} Non Color Joker`);
-//     }
-//   }
-// }
-
-
 class Deck {
     constructor() {
         this.deck = [];
-        const suits = ['Hearts'];
-        const values = ['Ace', 2];
+        const suits = ['Hearts', 'Spades', 'Clubs', 'Diamonds'];
+        const values = ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King'];
         const colors = ['Red', 'Blue'];
         for (let color of colors) {
             for (let suit in suits) {
                 for (let value in values) {
-                    this.deck.push(`${color} ${values[value]} of ${suits[suit]}`);
+                    this.deck.push({
+                        color: color,
+                        values: values[value],
+                        suits: suits[suit]
+                    });
                 }
             }
-            this.deck.push(`${color} Color Joker`);
-            this.deck.push(`${color} Non Color Joker`);
+            this.deck.push({
+                color: color,
+                value: 'Joker',
+                suits: 'Color'
+            });
+            this.deck.push({
+                color: color,
+                value: 'Joker',
+                suits: 'Non Color'
+            });
         }
     }
 }
+
+// class Deck {
+//     constructor() {
+//         this.deck = [];
+//         const suits = ['Hearts'];
+//         const values = ['Ace', 2];
+//         const colors = ['Red', 'Blue'];
+//         for (let color of colors) {
+//             for (let suit in suits) {
+//                 for (let value in values) {
+//                     this.deck.push(`${color} ${values[value]} of ${suits[suit]}`);
+//                 }
+//             }
+//             this.deck.push(`${color} Color Joker`);
+//             this.deck.push(`${color} Non Color Joker`);
+//         }
+//     }
+// }
 
 deck = new Deck();
 console.log('Deck:');
@@ -93,7 +104,7 @@ cutDeck();
 
 function setCardUnder() {
 
-    while (firstPart[firstPart.length - 1].includes('Joker')) {
+    while (firstPart[firstPart.length - 1].value === 'Joker') {
         player[currentPlayer].push(firstPart[firstPart.length - 1]);
         firstPart.splice(firstPart.length - 1, 1);
         if (firstPart.length < 1) {
@@ -111,41 +122,91 @@ function setCardUnder() {
     console.log(shuffledDeck);
 }
 
-function nextPlayer(current, max){
-    if( current >= max ){ currentPlayer = max - max; }
-    else { currentPlayer++; }
+setCardUnder();
+
+// Change current player
+function nextPlayer(current, max) {
+    if (current >= max - 1) {
+        currentPlayer = max - max;
+    }
+    else {
+        currentPlayer++;
+    }
     return currentPlayer;
 }
 
-
-setCardUnder();
-
-console.log('number of players: ' + player.length);
-
-
-
 console.log(currentPlayer);
-console.log(nextPlayer(currentPlayer, player.length - 1));
-console.log(nextPlayer(currentPlayer, player.length - 1));
-console.log(nextPlayer(currentPlayer, player.length - 1));
-console.log(nextPlayer(currentPlayer, player.length - 1));
-console.log(nextPlayer(currentPlayer, player.length - 1));
-console.log(nextPlayer(currentPlayer, player.length - 1));
+console.log(nextPlayer(currentPlayer, player.length));
+console.log(nextPlayer(currentPlayer, player.length));
 
+
+// Push cards from deck
+function pushCards(num, arr) {
+    let c = [];
+    for (let i = 0; i < num; i++) {
+        c.push(arr[i]);
+    }
+    arr.splice(0, num);
+    return c;
+}
+
+// Serve cards to players
 function serveCards(deck) {
+    let start = true;
+    switch (player[currentPlayer].length) {
+        case 1:
+            player[currentPlayer] = player[currentPlayer].concat(pushCards(1, deck));
+            nextPlayer(currentPlayer, player.length);
+            player[currentPlayer] = player[currentPlayer].concat(pushCards(2, deck));
+            nextPlayer(currentPlayer, player.length);
+            start = false;
+            break;
+        case 2:
+            nextPlayer(currentPlayer, player.length);
+            player[currentPlayer] = player[currentPlayer].concat(pushCards(2, deck));
+            nextPlayer(currentPlayer, player.length);
+            start = false;
+            break;
+        case 3:
+            nextPlayer(currentPlayer, player.length);
+            player[currentPlayer] = player[currentPlayer].concat(pushCards(4, deck));
+            nextPlayer(currentPlayer, player.length);
+            player[currentPlayer] = player[currentPlayer].concat(pushCards(1, deck));
+            nextPlayer(currentPlayer, player.length);
+            start = false;
+            break;
+        case 4:
+            nextPlayer(currentPlayer, player.length);
+            player[currentPlayer] = player[currentPlayer].concat(pushCards(4, deck));
+            nextPlayer(currentPlayer, player.length);
+            start = false;
+            break;
+        default:
+            start = false;
+    }
 
-    let counter = 0;
-
-    for (let i=0; i<10; i++) {
-        if( player[currentPlayer].length - 1 > counter ) continue;
-        // let cards = [shuffledDeck[counter], shuffledDeck[counter + 1]];
-        // player[currentPlayer].push(...cards);
-        player[currentPlayer].push(counter, counter + 1);
-        counter+=2;
-        nextPlayer(currentPlayer, player.length - 1);
+    if (!start) {
+        while (player[currentPlayer].length < 10) {
+            player[currentPlayer] = player[currentPlayer].concat(pushCards(2, deck));
+            nextPlayer(currentPlayer, player.length);
+            player[currentPlayer] = player[currentPlayer].concat(pushCards(2, deck));
+            nextPlayer(currentPlayer, player.length);
+        }
     }
 }
 
 serveCards(shuffledDeck);
+
+// Draw Card
+function drawCard() {
+    player[currentPlayer].push(shuffledDeck[0]);
+    shuffledDeck.splice(0, 1);
+}
+
+// Throw Card
+function throwCard(index) {
+    field.push(player[currentPlayer][index]);
+    player[currentPlayer].splice(index, 1);
+}
 
 console.log(player);

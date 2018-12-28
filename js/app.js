@@ -56,8 +56,8 @@ class Deck {
 // }
 
 deck = new Deck();
-console.log('Deck:');
-console.log(deck.deck);
+// console.log('Deck:');
+// console.log(deck.deck);
 // end of All Cards
 
 // Shufle Cards Fisher-Yates (aka Knuth) Shuffle.
@@ -82,7 +82,7 @@ function shuffle(array) {
 
 // Used like so
 
-console.log('Shuffled deck:');
+// console.log('Shuffled deck:');
 shuffledDeck = shuffle(deck.deck);
 // end of Shufle Cards
 
@@ -92,12 +92,12 @@ let secondPart;
 
 function cutDeck() {
     let cutDeck = Math.floor(Math.random() * (shuffledDeck.length - 1) + 1);
-    console.log('cut deck: ' + cutDeck);
+    // console.log('cut deck: ' + cutDeck);
 
     firstPart = shuffledDeck.slice(0, cutDeck);
     secondPart = shuffledDeck.slice(cutDeck, shuffledDeck.length);
-    console.log(firstPart);
-    console.log(secondPart);
+    // console.log(firstPart);
+    // console.log(secondPart);
 }
 
 cutDeck();
@@ -118,8 +118,8 @@ function setCardUnder() {
 
     shuffledDeck = secondPart.concat(firstPart);
 
-    console.log(cardUnder);
-    console.log(shuffledDeck);
+    // console.log(cardUnder);
+    // console.log(shuffledDeck);
 }
 
 setCardUnder();
@@ -135,9 +135,9 @@ function nextPlayer(current, max) {
     return currentPlayer;
 }
 
-console.log(currentPlayer);
-console.log(nextPlayer(currentPlayer, player.length));
-console.log(nextPlayer(currentPlayer, player.length));
+// console.log(currentPlayer);
+// console.log(nextPlayer(currentPlayer, player.length));
+// console.log(nextPlayer(currentPlayer, player.length));
 
 
 // Push cards from deck
@@ -209,4 +209,33 @@ function throwCard(index) {
     player[currentPlayer].splice(index, 1);
 }
 
-console.log(player);
+
+// console.log(player[0]);
+
+var a = [1, 2, 3, 5, 5, 5, 5, 9, 10, 11];
+
+console.log(a);
+
+function checkIfPlayerWon(arr) {
+
+    let tricks = [[],[],[]];
+    trickCounter = 0;
+    counter = 1;
+    for (let i=0; i<arr.length; i++) {
+        if(arr[i] === arr[i+1] - 1){
+            counter++;
+            if(counter > 1)
+            tricks[trickCounter].push(arr[i]);
+        } else {
+            tricks[trickCounter].push(arr[i]);;
+            console.log('jo');
+            counter = 1;
+            trickCounter++;
+        }
+
+        console.log(tricks);
+
+    }
+}
+
+checkIfPlayerWon(a);

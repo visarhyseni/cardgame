@@ -85,6 +85,7 @@ function shuffle(array) {
 // console.log('Shuffled deck:');
 shuffledDeck = shuffle(deck.deck);
 // end of Shufle Cards
+console.log(shuffledDeck);
 
 // Cut deck and set Card under
 let firstPart;
@@ -212,30 +213,40 @@ function throwCard(index) {
 
 // console.log(player[0]);
 
-var a = [1, 2, 3, 5, 5, 5, 5, 9, 10, 11];
+// var a = [1, 2, 3, 4, 5, 5, 5, 9, 10, 11];
+var a = [{color: "Blue", values: 1, suits: "Hearts"},
+{color: "Red", values: 2, suits: "Hearts"},
+{color: "Blue", values: 3, suits: "Hearts"},
+{color: "Red", values: 4, suits: "Hearts"},
+{color: "Red", values: 5, suits: "Hearts"},
+{color: "Blue", values: 6, suits: "Hearts"},
+{color: "Red", values: 7, suits: "Hearts"},
+{color: "Red", values: 8, suits: "Hearts"},
+{color: "Red", values: 9, suits: "Hearts"},
+{color: "Red", values: 10, suits: "Hearts"},
+{color: "Red", values: 11, suits: "Hearts"}];
 
 console.log(a);
 
-function checkIfPlayerWon(arr) {
 
-    let tricks = [[],[],[]];
-    trickCounter = 0;
-    counter = 1;
-    for (let i=0; i<arr.length; i++) {
-        if(arr[i] === arr[i+1] - 1){
+function checkForWin(a) {
+    let counter = 0;
+    let counter1 = 0;
+    for(let i=1; i<a.length; i++) {
+        if(a[i].suits === a[i-1].suits) {
             counter++;
-            if(counter > 1)
-            tricks[trickCounter].push(arr[i]);
-        } else {
-            tricks[trickCounter].push(arr[i]);;
-            console.log('jo');
-            counter = 1;
-            trickCounter++;
         }
-
-        console.log(tricks);
-
+        if (a[i].values === a[i-1].values + 1){
+            counter1++;
+        }
     }
+
+    console.log( counter, counter1);
+
+    if (counter === 10 && counter1 === 10) console.log('fitus rresht ngjyr');
+    else if (counter === 10) console.log('fitus ngjyr');
+    else if (counter1 === 10) console.log('fitus rresht');
+    else { console.log(' nuk ke fitu');}
 }
 
-checkIfPlayerWon(a);
+checkForWin(a);

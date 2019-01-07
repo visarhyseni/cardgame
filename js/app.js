@@ -217,10 +217,10 @@ function throwCard(index) {
 var a = [{color: "Blue", values: 1, suits: "Hearts"},
 {color: "Red", values: 2, suits: "Hearts"},
 {color: "Blue", values: 3, suits: "Hearts"},
-{color: "Red", values: 4, suits: "Hearts"},
 {color: "Red", values: 5, suits: "Hearts"},
-{color: "Blue", values: 6, suits: "Hearts"},
-{color: "Red", values: 7, suits: "Hearts"},
+{color: "Red", values: 6, suits: "Hearts"},
+{color: "Blue", values: 7, suits: "Hearts"},
+{color: "Red", values: 2, suits: "Hearts"},
 {color: "Red", values: 8, suits: "Hearts"},
 {color: "Red", values: 9, suits: "Hearts"},
 {color: "Red", values: 10, suits: "Hearts"},
@@ -241,12 +241,47 @@ function checkForWin(a) {
         }
     }
 
-    console.log( counter, counter1);
-
     if (counter === 10 && counter1 === 10) console.log('fitus rresht ngjyr');
     else if (counter === 10) console.log('fitus ngjyr');
     else if (counter1 === 10) console.log('fitus rresht');
     else { console.log(' nuk ke fitu');}
 }
 
+function consecutiveCards(a) {
+    const ret = [];
+    if (!a.length) return ret;
+    let ixf = 0;
+    for (let ixc = 1; ixc < a.length; ixc += 1) {
+        if (a[ixc].values !== a[ixc-1].values + 1) {
+            ret.push(a.slice(ixf, ixc));
+            ixf = ixc;
+        }
+    }
+    ret.push(a.slice(ixf, a.length));
+    return ret;
+}
+// function consecutiveCards(a) {
+//     let tricks = 0;
+//     let counter = 0;
+//     let cards = 0;
+//     for(let i=1; i<a.length; i++) {
+//         if(a[i].suits === a[i-1].suits) {
+//             if (a[i].values === a[i-1].values + 1){
+//                 counter++;
+//             }
+//             else {
+//                 counter++;
+//                 if(counter >= 3) {
+//                     tricks++;
+//                     cards += counter;
+//                     counter = 0;
+//                     debugger;
+//                 }
+//             }
+//         }
+//     }
+//     console.log({cards: cards, tricks: tricks});
+// }
+
+console.log(consecutiveCards(a));
 checkForWin(a);

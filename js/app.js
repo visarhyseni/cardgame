@@ -211,77 +211,43 @@ function throwCard(index) {
 }
 
 
-// console.log(player[0]);
-
-// var a = [1, 2, 3, 4, 5, 5, 5, 9, 10, 11];
-var a = [{color: "Blue", values: 1, suits: "Hearts"},
-{color: "Red", values: 2, suits: "Hearts"},
-{color: "Blue", values: 3, suits: "Hearts"},
-{color: "Red", values: 5, suits: "Hearts"},
-{color: "Red", values: 6, suits: "Hearts"},
-{color: "Blue", values: 7, suits: "Hearts"},
-{color: "Red", values: 2, suits: "Hearts"},
-{color: "Red", values: 8, suits: "Hearts"},
-{color: "Red", values: 9, suits: "Hearts"},
-{color: "Red", values: 10, suits: "Hearts"},
-{color: "Red", values: 11, suits: "Hearts"}];
+var a = [[{color: "Red", value: 5, suits: "d"},
+    {color: "Red", value: 6, suits: "d"},
+    {color: "Red", value: 7, suits: "d"}], [
+    {color: "Blue", value: 5, suits: "z"},
+    {color: "Red", value: 5, suits: "f"},
+    {color: "Blue", value: 5, suits: "z"}], [
+    {color: "Red", value: 1, suits: "f"},
+    {color: "Red", value: 2, suits: "f"},
+    {color: "Red", value: 3, suits: "f"},
+    {color: "Red", value: 4, suits: "f"}]];
 
 console.log(a);
 
+// checks if the trick is valid and returns true or false
+function checkIftheTrickIsWalid(arr) {
+    let counter = 1;
+    let counter1 = 1;
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i-1].value + 1 === arr[i].value && arr[i-1].color === arr[i].color) counter++;
+        else counter = 1;
+        if(arr[i-1].value === arr[i].value && arr[i].color !== arr[i-1].color) counter1++;
+        else counter1 = 1;
+    }
+    return counter === arr.length || counter1 === arr.length;
+}
 
-function checkForWin(a) {
+checkIftheTrickIsWalid(a[2]);
+
+// check if you have won
+function checkForWin(arr) {
     let counter = 0;
-    let counter1 = 0;
-    for(let i=1; i<a.length; i++) {
-        if(a[i].suits === a[i-1].suits) {
-            counter++;
-        }
-        if (a[i].values === a[i-1].values + 1){
-            counter1++;
-        }
+    for (let i=0; i< arr.length; i++){
+        if(checkIftheTrickIsWalid(arr[i]))
+            counter += arr[i].length;
     }
-
-    if (counter === 10 && counter1 === 10) console.log('fitus rresht ngjyr');
-    else if (counter === 10) console.log('fitus ngjyr');
-    else if (counter1 === 10) console.log('fitus rresht');
-    else { console.log(' nuk ke fitu');}
+    return counter === 10;
 }
 
-function consecutiveCards(a) {
-    const ret = [];
-    if (!a.length) return ret;
-    let ixf = 0;
-    for (let ixc = 1; ixc < a.length; ixc += 1) {
-        if (a[ixc].values !== a[ixc-1].values + 1) {
-            ret.push(a.slice(ixf, ixc));
-            ixf = ixc;
-        }
-    }
-    ret.push(a.slice(ixf, a.length));
-    return ret;
-}
-// function consecutiveCards(a) {
-//     let tricks = 0;
-//     let counter = 0;
-//     let cards = 0;
-//     for(let i=1; i<a.length; i++) {
-//         if(a[i].suits === a[i-1].suits) {
-//             if (a[i].values === a[i-1].values + 1){
-//                 counter++;
-//             }
-//             else {
-//                 counter++;
-//                 if(counter >= 3) {
-//                     tricks++;
-//                     cards += counter;
-//                     counter = 0;
-//                     debugger;
-//                 }
-//             }
-//         }
-//     }
-//     console.log({cards: cards, tricks: tricks});
-// }
+console.log(checkForWin(a));
 
-console.log(consecutiveCards(a));
-checkForWin(a);
